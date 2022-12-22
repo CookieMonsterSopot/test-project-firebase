@@ -1,0 +1,56 @@
+body {
+  margin: 0 auto;
+  text-align: center;
+}
+#app {
+  margin: 50px auto;
+  width: 500px;
+  border: 1px;
+  border-style: solid;
+
+  border-radius: 10px;
+}
+#top {
+  display: flex;
+  margin-top: 20px;
+}
+#folders {
+  margin: auto;
+  float: left;
+  display: block;
+  justify-content: space-between;
+}
+#addPhotoBox {
+  margin: auto;
+  display: block;
+  justify-content: flex-end;
+  float: right;
+}
+#addPhoto {
+  background-color: white;
+  border: 1px;
+  border-style: solid;
+  width: 250px;
+  display: block;
+  src: ;
+}
+#small {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+#thumbnailImage {
+  margin: 0 auto;
+  display: block;
+  max-width: 100px;
+  max-height: 100px;
+}
+
+#btn {
+  width: 180px;
+  margin-right: 70px;
+}
+#btnList {
+  width: 180px;
+  margin-right: 25px;
+}
