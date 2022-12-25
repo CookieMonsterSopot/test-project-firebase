@@ -50,17 +50,17 @@ ntfPhoto.addEventListener("change", () => {
   reader.readAsDataURL(photo);
   reader.onloadend = () => {
     ntfPrv.src = reader.result;
-    console.log(photo.name);
+    console.log(photo);
 
     const storageRef = ref(storage);
-    const imagesRef = ref(storageRef, "postImgs");
+    // const imagesRef = ref(storageRef, "postImgs");
 
-    const spaceRef = ref(imagesRef, photo.name);
+    // const spaceRef = ref(imagesRef, photo.name);
 
     send.addEventListener("click", () => {
       status.innerText = "Przesyłamy!";
-      uploadBytes(spaceRef).then(() => {
-        getDownloadURL(spaceRef).then((url) => {
+      uploadBytes(storageRef, photo.name).then(() => {
+        getDownloadURL(storageRef, photo.name).then((url) => {
           console.log("Got URL: " + url);
 
           // Insert url into an <img> tag to "download"
