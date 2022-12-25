@@ -36,41 +36,40 @@ const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
 
-const ntfPhoto = document.getElementById("addPhoto");
+const ntfPhoto = document.getElementById("ntfPhoto");
 const send = document.getElementById("btn");
 const ntfName = document.getElementById("ntfName");
 const status = document.getElementById("myStatus");
-
-const storageRef = ref(storage, `${ntfName.value}.txt`);
+const ntfPrv = document.getElementById("ntfPrv");
 
 // Raw string is the default if no format is provided
-const message = "This is my message.";
-uploadString(storageRef, message).then((snapshot) => {
-  console.log("Uploaded a raw string!");
-  console.log(snapshot);
-});
 
-addPhoto.addEventListener("change", () => {
+ntfPhoto.addEventListener("change", () => {
   const photo = ntfPhoto.files[0];
   const reader = new FileReader();
   reader.readAsDataURL(photo);
   reader.onloadend = () => {
-    thumbnailImage.src = reader.result;
+    ntfPrv.src = reader.result;
     console.log(photo.name);
-  };
 
-const storageRef = ref(storage, 
-  console.log(storageRef);
-  send.addEventListener("click", () => {
-    status.innerText = "Przesyłamy!";
-    uploadBytes(storageRef).then(() => {
-      status.innerText = "Przesłano!";
+    const storageRef = ref(storage);
+    const imagesRef = ref(storageRef, "postImgs");
+
+    const spaceRef = ref(imagesRef, photo.name);
+
+    send.addEventListener("click", () => {
+      status.innerText = "Przesyłamy!";
+      uploadBytes(spaceRef).then(() => {
+        getDownloadURL(spaceRef).then((url) => {
+          console.log("Got URL: " + url);
+
+          // Insert url into an <img> tag to "download"
+        });
+        status.innerText = "Przesłano!";
+      });
     });
-  }));
+  };
 });
-
-
-
 
 // document.getElementById("btnList").addEventListener("click", () => {
 //   const storageList = ref(storage,

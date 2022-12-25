@@ -8,28 +8,64 @@
       href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <title>STORAGE_eX-8</title>
+    <title>STORAGE_eX-9</title>
   </head>
   <body>
     <section id="mySection"></section>
     <main id="app">
       <div id="top">
-        <select id="folders">
-          <option>DOSTĘPNE ALBUMY</option>
-          <option id="private">Prywatny</option>
-          <option id="familly">Rodzina</option>
-          <option id="job">Praca</option>
-        </select>
-        <div id="addPhotoBox">
-          <input id="addPhoto" type="file" title="dodaj zdjęcie" />
-        </div>
+        <input id="ntfName" type="text" placeholder="NAZWA_ZGŁOSZENIA" />
+        <input id="ntfPhoto" type="file" title="BROWSE" />
       </div>
-      <div id="small"><img id="thumbnailImage" /></div>
-      <div id="btnBox">
-        <button id="btnList">SPRAWDŹ ZAWARTOŚĆ WYBRANEGO ALBUMU</button>
-        <button id="btn">PRZEŚLIJ PLIK DO WYBRANEGO ALBUMU</button>
-      </div>
+      <img id="ntfPrv" />
+      <input id="ntfText" type="text" placeholder="TREŚĆ ZGŁOSZENIA" />
+      <button id="btn">UTWÓRZ ZGŁOSZENIE</button>
       <h1 id="myStatus"></h1>
     </main>
   </body>
 </html>
+
+<!-- <div class="container" id="container">
+      <div class="jumbotron bg-dark" style="margin-top: 15px">
+        <div class="container text-center">
+          <form id="main-form">
+            <div class="form-group">
+              <textarea
+                type="text"
+                rows="5"
+                placeholder="Description..."
+                class="form-control"
+                id="main-desc"
+              ></textarea>
+              <div class="invalid-feedback">Please write somethinig</div>
+            </div>
+            <div class="form-group">
+              <input type="file" class="form-control" id="main-image" />
+              <div class="invalid-feedback">Please choose image</div>
+            </div>
+            <div class="form-group">
+              <img id="selected-image" width="250" height="150" src="#" />
+            </div>
+            <div class="form-group">
+              <div class="progress bg-secondary">
+                <div
+                  class="progress-bar bg-success"
+                  id="upload-progress"
+                  style="width: 0%"
+                  0%
+                ></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button
+                id="save-post"
+                type="button"
+                style="width: 150px; height: 60px"
+                class="btn btn-light bg-light text-dark"
+              ></button>
+            </div>
+          </form>
+          <div id="result"></div>
+        </div>
+      </div>
+ </div> -->
