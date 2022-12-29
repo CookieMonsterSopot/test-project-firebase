@@ -1,56 +1,197 @@
+html,
 body {
   margin: 0 auto;
   text-align: center;
+  font-family: Overpas;
 }
+.container {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  grid-template-rows: 50% 50%;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "add list"
+    "post list";
+  width: 900px;
+  height: 700px;
+}
+
+.add {
+  justify-self: center;
+  align-self: start;
+  grid-area: add;
+}
+
+.post {
+  justify-self: center;
+  align-self: start;
+  grid-area: post;
+}
+
+.list {
+  justify-self: left;
+  grid-area: list;
+}
+
+.box li {
+  margin: 10px;
+}
+/* For presentation only, no need to copy the code below */
+
+/* .container * {
+  border: 1px solid red;
+  position: relative;
+}
+
+.container *:after {
+  content: attr(class);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+} */
+
 #app {
   margin: 50px auto;
+  height: 290px;
   width: 500px;
   border: 1px;
   border-style: solid;
-
+  text-align: center;
   border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 #top {
-  display: flex;
-  margin-top: 20px;
-}
-#folders {
-  margin: auto;
-  float: left;
-  display: block;
-  justify-content: space-between;
-}
-#addPhotoBox {
-  margin: auto;
-  display: block;
-  justify-content: flex-end;
-  float: right;
-}
-#addPhoto {
-  background-color: white;
-  border: 1px;
-  border-style: solid;
-  width: 250px;
-  display: block;
-  src: ;
-}
-#small {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding-top: 5px;
   width: 100%;
+  margin: 10px;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+#ntfName {
+  padding: 13px;
+  width: 180px;
+  float: left;
+  margin-right: 10px;
+  border-radius: 10px;
+  border-width: 0.1px;
+  border-style: solid;
+}
+#ntfPhoto {
+  float: right;
+  width: 180px;
+  padding: 10px;
+  margin-left: 10px;
+  border-radius: 10px;
+  border-width: 0.1px;
+  border-style: solid;
 }
 #ntfPrv {
-  margin: 0 auto;
-  display: block;
-  max-width: 100px;
-  max-height: 100px;
+  margin: 0;
+  max-width: 80px;
+  max-height: 50px;
+  border-radius: 10px;
+  border-width: 0.1px;
+  border-style: solid;
+}
+
+#ntfText {
+  width: 90%;
+  height: 80px;
+  padding: 10px;
+  margin: 0;
+  display: table;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border-width: 0.1px;
+  border-style: solid;
 }
 
 #btn {
   width: 180px;
   margin-right: 70px;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border-width: 0.1px;
+  border-style: solid;
 }
-#btnList {
-  width: 180px;
-  margin-right: 25px;
+#postBox {
+  height: 290px;
+  box-sizing: border-box;
+  margin: 10px auto;
+  width: 500px;
+  border: 1px;
+  border-style: solid;
+  text-align: center;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+#postName {
+  height: 20px;
+  width: 90%;
+  margin: 5px 0 5px 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border-width: 0.1px;
+  border-style: solid;
+}
+#postText {
+  width: 90%;
+
+  height: 100px;
+  margin: 5px 0 5px 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border-width: 0.1px;
+  border-style: solid;
+}
+#postView {
+  margin-bottom: 10px;
+  width: 250px;
+  height: 100px;
+  max-width: 200px;
+  max-height: 120px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border-width: 0.1px;
+  border-style: solid;
+}
+#listBox {
+  display: block;
+  margin-top: 50px;
+  height: 600px;
+  width: 400px;
+  text-align: left;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border-width: 0.1px;
+  border-style: solid;
 }

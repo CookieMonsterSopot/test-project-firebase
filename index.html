@@ -12,16 +12,35 @@
   </head>
   <body>
     <section id="mySection"></section>
-    <main id="app">
-      <div id="top">
-        <input id="ntfName" type="text" placeholder="NAZWA_ZGŁOSZENIA" />
-        <input id="ntfPhoto" type="file" title="BROWSE" />
+    <div class="container">
+      <div class="add">
+        <main id="app">
+          <div id="top">
+            <input id="ntfName" type="text" placeholder="NAZWA_ZGŁOSZENIA" />
+            <input id="ntfPhoto" type="file" title="BROWSE" />
+          </div>
+          <img id="ntfPrv" />
+          <textarea
+            type="text"
+            rows="5"
+            placeholder="TREŚĆ ZGŁOSZENIA"
+            id="ntfText"
+          ></textarea>
+          <button id="btn">UTWÓRZ ZGŁOSZENIE</button>
+          <h1 id="myStatus"></h1>
+        </main>
       </div>
-      <img id="ntfPrv" />
-      <input id="ntfText" type="text" placeholder="TREŚĆ ZGŁOSZENIA" />
-      <button id="btn">UTWÓRZ ZGŁOSZENIE</button>
-      <h1 id="myStatus"></h1>
-    </main>
+      <div class="post">
+        <main id="postBox">
+          <div id="postName"></div>
+          <div id="postText"></div>
+          <img id="postView" />
+        </main>
+      </div>
+      <div class="list" id="list">
+        <div id="listBox"></div>
+      </div>
+    </div>
   </body>
 </html>
 
