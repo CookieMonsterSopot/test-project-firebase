@@ -22,7 +22,24 @@ import {
   query,
   documentId,
   listCollections,
+  onSnapshot,
 } from "firebase/firestore";
+import {
+  getDatabase,
+  ref as rtref,
+  set,
+  push,
+  onChildAdded,
+} from "firebase/database";
+import {
+  getAuth,
+  EmailAuthProvider,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
+import * as firebaseui from "firebaseui";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCWeuEMFZpXzes_qswwGla9cSL9tEiLBHo",
@@ -30,102 +47,166 @@ const firebaseConfig = {
   projectId: "test-project-21166",
   storageBucket: "test-project-21166.appspot.com",
   messagingSenderId: "242141797060",
+  databaseURL:
+    "https://test-project-21166-default-rtdb.europe-west1.firebasedatabase.app",
   appId: "1:242141797060:web:e5611e8b2b8901347b8791",
 };
 
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
+const rtdb = getDatabase(app);
+const auth = getAuth(app);
+const ui = new firebaseui.auth.AuthUI(auth);
 
-const ntfPhoto = document.getElementById("ntfPhoto");
-const send = document.getElementById("btn");
-const ntfName = document.getElementById("ntfName");
-const status = document.getElementById("myStatus");
-const ntfPrv = document.getElementById("ntfPrv");
-const ntfText = document.getElementById("ntfText");
+//INPUTS
+const userName = document.getElementById("name");
+const userSurname = document.getElementById("surname");
+const userColor = document.getElementById("userColor");
+const userMessage = document.getElementById("message");
+const profilePhoto = document.getElementById("photoProfile");
+const profileColor = document.getElementById("profileColor");
 
-// Raw string is the default if no format is provided
+//BUTTONS
+const addUserBtn = document.getElementById("add");
+const sendMessage = document.getElementById("send");
+const signOutBtn = document.getElementById("signout");
+const updatePhotoBtn = document.getElementById("updatePhoto");
+const updateProfileColorBtn = document.getElementById("updateProfileColor");
 
-ntfPhoto.addEventListener("change", () => {
-  const photo = ntfPhoto.files[0];
-  const reader = new FileReader();
-  reader.readAsDataURL(photo);
-  reader.onloadend = () => {
-    ntfPrv.src = reader.result;
-    const storageRef = ref(storage, "postImgs/" + photo.name);
-    send.addEventListener("click", () => {
-      status.innerText = "Przesyłamy!";
+//SELECTS
+const usersSelect = document.getElementById("users");
 
-      uploadBytes(storageRef, photo).then((snapshot) => {
-        getDownloadURL(storageRef, photo.name).then((url) => {
-          console.log("Got URL: " + url);
-          const postView = document.getElementById("postView");
-          postView.src = url;
+//FORMS
+const messageForm = document.getElementById("messageForm");
 
-          const postDoc = doc(db, "posts", `${ntfName.value}`);
-          setDoc(
-            postDoc,
-            {
-              name: ntfName.value,
-              message: ntfText.value,
-              photo: url,
-            },
-            { merge: true }
-          );
-          getDoc(postDoc).then((doc) => {
-            const myObj = doc.data();
-            const postName = document.getElementById("postName");
-            const postText = document.getElementById("postText");
+//CONTAINERS
+const messagesContainer = document.getElementById("messages");
 
-            postName.innerText = myObj.name;
-            postText.innerText = myObj.message;
-            postView.src = myObj.photo;
-          });
-        });
+//REFS
+const usersRef = rtref(rtdb, "users");
+const messagesRef = rtref(rtdb, "messages");
 
-        status.innerText = "Przesłano!";
-      });
-    });
-  };
+//IMG
+const profileImg = document.getElementById("profile");
+
+let selectedUser;
+
+sendMessage.addEventListener("click", () => {
+  const messageRef = push(messagesRef);
+
+  set(messageRef, {
+    userName: selectedUser.name,
+    userSurname: selectedUser.surname,
+    userColor: selectedUser.color,
+    text: userMessage.value,
+    date: new Date().toISOString(),
+  }).then(() => {
+    userMessage.value = "";
+  });
 });
 
-let itemParent = document.getElementById("listBox");
-let newItem = document.createElement("ol");
-newItem.className = "box";
-itemParent.appendChild(newItem);
-const usersCollection = collection(db, "posts");
-getDocs(usersCollection).then((docs) => {
-  docs.forEach((doc) => {
-    console.log(doc.data());
-    const myObj = doc.data();
-    const myLi = document.createElement("li");
-    const editBtn = document.createElement("button");
-    editBtn.innerText = "POKAŻ";
-    myLi.innerText = `${myObj.name}`;
-    newItem.appendChild(myLi);
-    newItem.appendChild(editBtn);
+usersSelect.addEventListener("change", () => {
+  const userHeader = document.getElementById("selectedUser");
 
-    editBtn.addEventListener("click", () => {
-      postName.innerText = myObj.name;
-      postText.innerText = myObj.message;
+  if (usersSelect.value) {
+    const user = JSON.parse(usersSelect.value);
+    userHeader.innerText = `${user.name} ${user.surname}`;
+    userHeader.style.color = user.color;
+    selectedUser = user;
+    messageForm.style.display = "flex";
+  } else {
+    userHeader.innerText = "";
+    selectedUser = undefined;
+    messageForm.style.display = "none";
+  }
+});
 
-      postView.src = myObj.photo;
+addUserBtn.addEventListener("click", () => {
+  const userRef = push(usersRef);
+
+  set(userRef, {
+    name: userName.value,
+    surname: userSurname.value,
+    color: userColor.value,
+  }).then(() => {
+    userName.value = "";
+    userSurname.value = "";
+    userColor.value = "";
+  });
+});
+
+onChildAdded(usersRef, (userSnapshot) => {
+  const user = userSnapshot.val();
+  const option = document.createElement("option");
+  option.innerText = `${user.name} ${user.surname}`;
+  option.value = JSON.stringify(user);
+
+  usersSelect.appendChild(option);
+});
+
+onChildAdded(messagesRef, (messageSnapshot) => {
+  const message = messageSnapshot.val();
+  const messageDiv = document.createElement("div");
+  const authorSpan = document.createElement("span");
+  const dateSpan = document.createElement("span");
+  const messageSpan = document.createElement("span");
+
+  authorSpan.innerText = `${message.userName} ${message.userSurname}`;
+  dateSpan.innerText = new Date(message.date).toLocaleString();
+  messageSpan.innerText = message.text;
+  messageSpan.style.color = message.userColor;
+
+  messageDiv.classList.add("message");
+  messageDiv.appendChild(authorSpan);
+  messageDiv.appendChild(dateSpan);
+  messageDiv.appendChild(messageSpan);
+
+  messagesContainer.appendChild(messageDiv);
+});
+
+ui.start("#firebaseui-auth-container", {
+  signInOptions: [
+    EmailAuthProvider.PROVIDER_ID,
+    GoogleAuthProvider.PROVIDER_ID,
+  ],
+  signInSuccessUrl: "http://localhost:8080/",
+});
+
+onAuthStateChanged(auth, (user) => {
+  const greetings = document.getElementById("greetings");
+  if (user) {
+    greetings.innerText = `Hello ${user.displayName}!`;
+    signOutBtn.style.display = "block";
+    profileImg.src = user.photoURL;
+  } else {
+    greetings.innerText = "Not logged in";
+    signOutBtn.style.display = "none";
+    profileImg.src = "";
+  }
+});
+
+signOutBtn.addEventListener("click", () => {
+  signOut(auth);
+});
+
+updatePhotoBtn.addEventListener("click", () => {
+  const file = profilePhoto.files[0];
+
+  const photoFileRef = ref(storage, `${auth.currentUser.uid}/profilePhoto.jpg`);
+
+  uploadBytes(photoFileRef, file).then((res) => {
+    getDownloadURL(res.ref).then((url) => {
+      updateProfile(auth.currentUser, {
+        photoURL: url,
+      });
     });
   });
 });
 
-// const usersList = document.getElementById("listBox");
-// const usersCollection = collection(db, "posts");
-// usersList.innerHTML = "";
-// const userQuery = query(
-//   usersCollection,
-//   where("name", "==", myQueryName.value)
-// );
-// getDocs(userQuery).then((docs) => {
-//   docs.forEach((userDoc) => {
-//     const user = userDoc.data();
-//     const userListItem = document.createElement("li");
-//     userListItem.innerText = `${user.name}`;
-//     usersList.appendChild(userListItem);
-//   });
-// });
+updateProfileColorBtn.addEventListener("click", () => {
+  const userDoc = doc(db, `users/${auth.currentUser.uid}`);
+  setDoc(userDoc, {
+    color: profileColor.value,
+  });
+});

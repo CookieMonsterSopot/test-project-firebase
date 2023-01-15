@@ -8,83 +8,50 @@
       href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <title>STORAGE_eX-9</title>
+    <title>PHOTO ALBUM</title>
   </head>
   <body>
-    <section id="mySection"></section>
-    <div class="container">
-      <div class="add">
-        <main id="app">
-          <div id="top">
-            <input id="ntfName" type="text" placeholder="NAZWA_ZGŁOSZENIA" />
-            <input id="ntfPhoto" type="file" title="BROWSE" />
-          </div>
-          <img id="ntfPrv" />
-          <textarea
-            type="text"
-            rows="5"
-            placeholder="TREŚĆ ZGŁOSZENIA"
-            id="ntfText"
-          ></textarea>
-          <button id="btn">UTWÓRZ ZGŁOSZENIE</button>
-          <h1 id="myStatus"></h1>
-        </main>
-      </div>
-      <div class="post">
-        <main id="postBox">
-          <div id="postName"></div>
-          <div id="postText"></div>
-          <img id="postView" />
-        </main>
-      </div>
-      <div class="list" id="list">
-        <div id="listBox"></div>
-      </div>
+    <h3 id="greetings"></h3>
+    <img id="profile" />
+    <div id="firebaseui-auth-container"></div>
+    <button id="signout">Sign out</button>
+    <div id="updateProfilePhoto">
+      <input id="photoProfile" type="file" />
+      <button id="updatePhoto">Update profile photo</button>
     </div>
+    <div id="setProfileColor">
+      <input id="profileColor" type="color" />
+      <button id="updateProfileColor">Update profile color</button>
+    </div>
+    <div class="user-form">
+      <label>Name</label>
+      <input id="name" />
+
+      <label>Surname</label>
+      <input id="surname" />
+
+      <label>Color</label>
+      <input id="userColor" type="color" />
+
+      <button id="add">Add user</button>
+    </div>
+
+    <div class="users">
+      <select id="users">
+        <option value="">----select user-----</option>
+      </select>
+    </div>
+
+    <div class="selected-user">
+      <h2 id="selectedUser"></h2>
+    </div>
+
+    <div id="messageForm" class="message-input" style="display: none">
+      <label>Message</label>
+      <input id="message" />
+      <button id="send">Send message</button>
+    </div>
+
+    <div id="messages" class="messages"></div>
   </body>
 </html>
-
-<!-- <div class="container" id="container">
-      <div class="jumbotron bg-dark" style="margin-top: 15px">
-        <div class="container text-center">
-          <form id="main-form">
-            <div class="form-group">
-              <textarea
-                type="text"
-                rows="5"
-                placeholder="Description..."
-                class="form-control"
-                id="main-desc"
-              ></textarea>
-              <div class="invalid-feedback">Please write somethinig</div>
-            </div>
-            <div class="form-group">
-              <input type="file" class="form-control" id="main-image" />
-              <div class="invalid-feedback">Please choose image</div>
-            </div>
-            <div class="form-group">
-              <img id="selected-image" width="250" height="150" src="#" />
-            </div>
-            <div class="form-group">
-              <div class="progress bg-secondary">
-                <div
-                  class="progress-bar bg-success"
-                  id="upload-progress"
-                  style="width: 0%"
-                  0%
-                ></div>
-              </div>
-            </div>
-            <div class="form-group">
-              <button
-                id="save-post"
-                type="button"
-                style="width: 150px; height: 60px"
-                class="btn btn-light bg-light text-dark"
-              ></button>
-            </div>
-          </form>
-          <div id="result"></div>
-        </div>
-      </div>
- </div> -->
